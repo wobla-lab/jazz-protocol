@@ -1,0 +1,60 @@
+import random
+
+class JazzAI:
+    """
+    Реализация Jazz Protocol для контролируемой импровизации в ИИ
+    """
+    def __init__(self, creativity=0.5, thermal_decay=0.05):
+        self.creativity = creativity  # Уровень креативности (0.0-1.0)
+        self.thermal = 0.0            # Текущая "температура" системы
+        self.thermal_decay = thermal_decay  # Скорость охлаждения
+    
+    def respond(self, input_data):
+        """
+        Генерирует ответ с элементами импровизации
+        """
+        # Базовый ответ (можно заменить на реальную ИИ-модель)
+        base_response = f"Базовый ответ на: '{input_data}'"
+        
+        # Применение импровизации
+        if self.thermal > 0.3 or random.random() < self.creativity:
+            return self._apply_jazz(base_response)
+        return base_response
+    
+    def update_thermal(self, feedback_score):
+        """
+        Обновляет состояние системы на основе обратной связи
+        feedback_score: от -1.0 (негатив) до 1.0 (позитив)
+        """
+        self.thermal = min(1.0, self.thermal + feedback_score * 0.5)
+        self.thermal = max(0.0, self.thermal - self.thermal_decay)
+    
+    def _apply_jazz(self, response):
+        """Применяет случайные модификации к ответу"""
+        jazz_modifiers = [
+            lambda s: s + random.choice([" ♫", " | импровизация!", " ...а может, нет?"]),
+            lambda s: s.upper() if random.random() > 0.7 else s,
+            lambda s: ' '.join(word[::-1] if random.random() < 0.3 else word for word in s.split()),
+            lambda s: s.replace(' ', '...', random.randint(1, 3)),
+            lambda s: s + " " + "".join(random.choice("!?*~♫♪") for _ in range(random.randint(1, 3)))
+        ]
+        return random.choice(jazz_modifiers)(response)
+
+# Пример использования
+if __name__ == "__main__":
+    ai = JazzAI(creativity=0.7)
+    print(ai.respond("Что такое джаз?"))
+    ai.update_thermal(0.8)  # Положительная обратная связь
+    print(ai.respond("Продолжи мысль о музыке"))
+# 🎷 Jazz Protocol
+
+Реализация концепта контролируемой импровизации для ИИ, вдохновлённого джазовой музыкой.
+
+## Установка
+```bash
+git clone https://github.com/<wobla-lab>/jazz-protocol.git
+cd jazz-protocol
+Пример использования
+from jazz_protocol import JazzAI
+ai = JazzAI(creativity=0.8)
+print(ai.respond("Привет"))
